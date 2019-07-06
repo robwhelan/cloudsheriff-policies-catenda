@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+    <title>cloudjanitorz Demo</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <h1>Cloudjanitorz Dashboard</h1>
+      <div class="row">
+        <div class="col-sm">
+          <canvas id="myChart1" width="400" height="250"></canvas>
+        </div>
+        <div class="col-sm">
+          <canvas id="myChart2" width="400" height="250"></canvas>
+        </div>
+        <div class="col-sm">
+          <canvas id="myChart3" width="400" height="250"></canvas>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <canvas id="myChart4" width="400" height="250"></canvas>
+        </div>
+        <div class="col-sm">
+          <canvas id="myChart5" width="400" height="250"></canvas>
+        </div>
+        <div class="col-sm">
+          <canvas id="myChart6" width="400" height="250"></canvas>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+    var ctx = document.getElementById('myChart1').getContext('2d');
+    //call api.
+    var url = 'https://jsnf140msg.execute-api.us-east-1.amazonaws.com/Prod/first-policy'
+    fetch(url).then(function(response) {
+      response.text().then(function(resp) {
+        const data = JSON.parse(resp);
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [data.first, data.second],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+      });
+    });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
