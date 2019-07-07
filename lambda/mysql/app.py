@@ -35,7 +35,8 @@ def handler(event, context):
 
     with conn.cursor() as cur:
         #cur.execute("create table Employee ( EmpID  int NOT NULL, Name varchar(255) NOT NULL, PRIMARY KEY (EmpID))")
-        #cur.execute('insert into Employee (EmpID, Name) values(1, "Joe")')
+        #cur.execute('insert into Employee (EmpID, Name) values(30, "Pearson")')
+        #cur.execute('insert into Employee (EmpID, Name) values(40, "Daddy")')
         cur.execute('select * from Employee')
         returned_items = cur.fetchall()
         for row in returned_items:
@@ -52,7 +53,9 @@ def handler(event, context):
         },
         'body': json.dumps({
             'first': returned_items[0][1],
-            'second': returned_items[1][1]
+            'second': returned_items[1][1],
+            'third': returned_items[3][1],
+            'fourth': returned_items[4][1]
         }),
         'isBase64Encoded': False
     }

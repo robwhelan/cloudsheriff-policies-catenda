@@ -29,7 +29,7 @@ $ aws rds create-db-instance --db-name cloudjanitorz --engine MySQL \
 --master-username cloudjanitorz --master-user-password cloudjanitorz
 
 Lambda.
-$ aws lambda create-function --function-name cloudjanitorz-connectmysql --runtime python3.6 \
+$ aws lambda create-function --function-name cloudjanitorz-load-policy-data --runtime python3.6 \
 --zip-file fileb://function.zip --handler app.handler \
 --role arn:aws:iam::773548596459:role/lambda_basic_execution \
 --timeout 15
@@ -50,3 +50,5 @@ aws lambda invoke --function-name cloudjanitorz-connectmysql lambda-results
 atom lambda-results
 
 TODO: add individual tables based on how the CSV comes out.
+
+aws lambda invoke --function-name cloudjanitorz-load-policy-data --payload file://payload.json lambda-results

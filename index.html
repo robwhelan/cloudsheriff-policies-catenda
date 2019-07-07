@@ -46,19 +46,23 @@
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: [data.first, data.second],
+                labels: [data.first, data.second, data.third, data.fourth],
                 datasets: [{
                     label: '# of Votes',
-                    data: [12, 19],
+                    data: [12, 19, 35, 150],
                     backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
                     ],
-                    borderWidth: 1
+                    borderWidth: 2
                 }]
             },
             options: {
