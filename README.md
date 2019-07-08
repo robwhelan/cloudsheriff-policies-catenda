@@ -1,3 +1,11 @@
+TODO:
+1. S3 new object triggers a lambda
+2. The lambda can load the data and it knows the policy
+3. next, need to build tables for each policy (know what data you want to get... normalize everything?)
+4. START THE EC2 INSTANCE AND THE RDS DATABASE  
+5. write up the insert statements for each table.
+6. write up SELECT * statements for different endpoints on the demo dashboard.
+
 tips
 
 To get a CSV report, first run the policy:
