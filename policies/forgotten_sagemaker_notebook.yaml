@@ -1,0 +1,13 @@
+policies:
+  - name: forgotten_sagemaker_notebook
+    resource: aws.sagemaker-notebook
+    description: |
+      Stops sagemaker notebooks that have been left on.
+    #filters:
+    #  - type: metrics
+    #    name: CPUUtilization
+    #    days: 1
+    #    value: 30
+    #    op: less-than
+    #actions:
+    #  - stop

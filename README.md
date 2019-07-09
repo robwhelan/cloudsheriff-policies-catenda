@@ -50,3 +50,7 @@ atom lambda-results
 TODO: add individual tables based on how the CSV comes out.
 
 aws lambda invoke --function-name cloudjanitorz-load-policy-data --payload file://payload.json lambda-results
+
+
+FUTURE IDEAS
+1. user interface showing all policies in plain english. when a new one is added, a database table is created, and the minimum access for the role will be added.

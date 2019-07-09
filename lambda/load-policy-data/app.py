@@ -41,6 +41,9 @@ def handler(event, context):
                 #insert
                 with conn.cursor() as cur:
                     for r in obj:
+                        if policy_name == "forgotten_sagemaker_notebook":
+                            sql = 'insert into forgotten_sagemaker_notebook (NotebookInstanceArn, NotebookInstanceName, CreationTime) VALUES (%s, %s, %s)'
+                            cur.execute(sql, (r["NotebookInstanceArn"], r["NotebookInstanceName"], r["CreationTime"]))
 
                         if policy_name == "release_unallocated_eips":
                             sql = 'insert into release_unallocated_eips (AllocationId, PublicIp) VALUES (%s, %s)'

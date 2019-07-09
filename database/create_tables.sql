@@ -15,3 +15,9 @@ CREATE TABLE release_unallocated_eips (
   AllocationId varchar(56),
   PublicIp varchar(56)
 );
+
+CREATE TABLE forgotten_sagemaker_notebook (
+  NotebookInstanceArn varchar(112), /* need longer space for long arns */
+  NotebookInstanceName varchar(56),
+  CreationTime timestamp
+);
