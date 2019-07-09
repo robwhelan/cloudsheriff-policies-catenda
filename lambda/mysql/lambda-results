@@ -1,1 +1,1 @@
-{"statusCode": 200, "headers": {"Access-Control-Allow-Origin": "*", "Content-Type": "application/json"}, "body": "{\"first\": \"Joe\", \"second\": \"Bob\", \"third\": \"Pearson\", \"fourth\": \"Daddy\"}", "isBase64Encoded": false}
+{"errorMessage": "'resource'", "errorType": "KeyError", "stackTrace": [["/var/task/app.py", 31, "handler", "policy_name = event[\"resource\"].split('/')[1]"]]}

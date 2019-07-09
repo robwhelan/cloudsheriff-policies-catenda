@@ -21,26 +21,25 @@ except pymysql.MySQLError as e:
 
 logger.info("SUCCESS: Connection to RDS MySQL instance succeeded")
 
-def create_tables():
-    with conn.cursor() as cur:
-        cur.execute("create table Employee ( EmpID  int NOT NULL, Name varchar(255) NOT NULL, PRIMARY KEY (EmpID))")
-        conn.commit()
-    return
-
 def handler(event, context):
     """
     This function fetches content from MySQL RDS instance
     """
     returned_items = ''
 
+    #find out which endpoint it came from
+    policy_name = event["resource"].split('/')[1]
+    policy_name = policy_name.replace('-', '_') #sql-friendly underscores.
     with conn.cursor() as cur:
         #cur.execute("create table Employee ( EmpID  int NOT NULL, Name varchar(255) NOT NULL, PRIMARY KEY (EmpID))")
         #cur.execute('insert into Employee (EmpID, Name) values(30, "Pearson")')
         #cur.execute('insert into Employee (EmpID, Name) values(40, "Daddy")')
-        cur.execute('select * from Employee')
+        sql = f'select * from {policy_name}'
+        print(sql)
+        cur.execute(sql)
         returned_items = cur.fetchall()
-        for row in returned_items:
-            print(row[0], row[1])
+        #for row in returned_items:
+            #print(row[0], row[1])
         #for row in cur:
         #    logger.info("row: ", row)
     conn.commit()
@@ -52,11 +51,9 @@ def handler(event, context):
             'Content-Type': 'application/json'
         },
         'body': json.dumps({
-            'first': returned_items[0][1],
-            'second': returned_items[1][1],
-            'third': returned_items[3][1],
-            'fourth': returned_items[4][1]
-        }),
+            'policy': policy_name,
+            'data': returned_items
+        }, default=str),
         'isBase64Encoded': False
     }
     return response
