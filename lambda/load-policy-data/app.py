@@ -18,25 +18,7 @@ except pymysql.MySQLError as e:
     logger.error(e)
     sys.exit()
 
-#download the file
-
-#InstanceId = obj["InstanceId"]
-#InstanceType =obj[0]["InstanceType"]
-#LaunchTime = obj[0]["LaunchTime"]
-#VpcId = obj[0]["VpcId"]
-#PrivateIpAddress = obj[0]["PrivateIpAddress"]
-#InstanceState = obj[0]["State"]["Name"]
-#CPUUtilization = obj[0]["c7n.metrics"]["AWS/EC2.CPUUtilization.Average"][0]["Average"]
-
-
-
 s3 = boto3.resource('s3')
-
-def create_table():
-    with conn.cursor() as cur:
-        #cur.execute("create table Employee ( EmpID  int NOT NULL, Name varchar(255) NOT NULL, PRIMARY KEY (EmpID))")
-        conn.commit()
-
 
 def handler(event, context):
     #KEY = 'resources.json.gz'
@@ -59,11 +41,17 @@ def handler(event, context):
                 #insert
                 with conn.cursor() as cur:
                     for r in obj:
-                        #InstanceId = str(r["InstanceId"])
-                        #cur.execute(f'insert into underutilized_ec2 (InstanceId, InstanceType, LaunchTime, VpcId, PrivateIpAddress, InstanceState, CpuUtilization) values({r["InstanceId"]}, {r["InstanceType"]}, {r["LaunchTime"]}, {r["VpcId"]}, {r["PrivateIpAddress"]}, {r["State"]["Name"]}, {round(Decimal(r["c7n.metrics"]["AWS/EC2.CPUUtilization.Average"][0]["Average"]),8)})')
-                        #print(f'{r["InstanceId"]}, {r["InstanceType"]}, {r["LaunchTime"]}, {r["VpcId"]}, {r["PrivateIpAddress"]}, {r["State"]["Name"]}, {round(Decimal(r["c7n.metrics"]["AWS/EC2.CPUUtilization.Average"][0]["Average"]),8)})')
-                        sql = 'insert into underutilized_ec2 (InstanceId, InstanceType, VpcId, InstanceState) VALUES (%s, %s, %s, %s)'
-                        cur.execute(sql, (r["InstanceId"], r["InstanceType"], r["VpcId"], r["State"]["Name"]))
+
+                        if policy_name == "release_unallocated_eips":
+                            sql = 'insert into release_unallocated_eips (AllocationId, PublicIp) VALUES (%s, %s)'
+                            cur.execute(sql, (r["AllocationId"], r["PublicIp"]))
+
+                        if policy_name == "underutilized_ec2":
+                            cpu_util = str(round(Decimal(r["c7n.metrics"]["AWS/EC2.CPUUtilization.Average"][0]["Average"]),5))
+                            #print('cpu_util: ', cpu_util)
+                            sql = 'insert into underutilized_ec2 (InstanceId, InstanceType, VpcId, InstanceState, LaunchTime, PrivateIpAddress, CpuUtilization) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                            cur.execute(sql, (r["InstanceId"], r["InstanceType"], r["VpcId"], r["State"]["Name"], r["LaunchTime"], r["PrivateIpAddress"], cpu_util))
+
                     conn.commit()
 
                 #then tell the websocket about the new data

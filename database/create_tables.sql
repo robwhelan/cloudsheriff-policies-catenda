@@ -1,3 +1,6 @@
+create database cloudjanitorz;
+  use cloudjanitorz;
+
 CREATE TABLE underutilized_ec2 (
   InstanceId varchar(56),
   InstanceType varchar(56),
@@ -8,4 +11,7 @@ CREATE TABLE underutilized_ec2 (
   CpuUtilization DECIMAL(10,8)
 );
 
-insert into underutilized_ec2 (LaunchTime) values("2019-07-06T22:38:27+00:00")
+CREATE TABLE release_unallocated_eips (
+  AllocationId varchar(56),
+  PublicIp varchar(56)
+);

@@ -1,0 +1,10 @@
+policies:
+  - name: release_unallocated_eips
+    resource: network-addr
+    #filters:
+    #  - AllocationId: ...
+    actions:
+      - type: mark-for-op
+        tag: custodian_cleanup
+        op: release
+        days: 4

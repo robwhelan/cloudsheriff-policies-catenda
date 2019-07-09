@@ -1,40 +1,30 @@
 TODO:
-1. S3 new object triggers a lambda
-2. The lambda can load the data and it knows the policy
-3. next, need to build tables for each policy (know what data you want to get... normalize everything?)
+1. DONE S3 new object triggers a lambda
+2. DONE The lambda can load the data and it knows the policy
+3. (2/6) next, need to build tables for each policy (know what data you want to get... normalize everything?)
 4. START THE EC2 INSTANCE AND THE RDS DATABASE  
 5. write up the insert statements for each table.
-6. write up SELECT * statements for different endpoints on the demo dashboard.
+6. write up SELECT * statements for different endpoints on the demo dashboard. -- do this for each policy. 6 policies.
 
-tips
 
-To get a CSV report, first run the policy:
-```
-$ custodian run -s s3://bigdatalabsrww/custodian-report/ custodian-2.yml
-```
+File arch.
+Policy filename should match the `name` field of the Policy, which should match the database table name.
+Pick the database table columns from the default output of the `report` function.
 
-Then, get the csv output with special fields:
-```
-$ custodian report -s s3://bigdatalabsrww/custodian-report/ custodian-2.yml >> output.csv
-```
-
-In order to get this CSV file which can be used for "big data for security" then you need to write all policies as resource-specific.
-
-```
-custodian report -s s3://bigdatalabsrww/custodian-report/ custodian-2.yml >> output.csv
-2019-07-05 19:40:04,980: custodian.commands:ERROR Error: Report subcommand can accept multiple policies, but they must all be for the same resource.
-```
 
 RDS
-Postgres
+mysql
 cloudjanitorz (username and password)
-db name: cloudjanitorpolicies
+db name: cloudjanitorz
 
 RDS db
 $ aws rds create-db-instance --db-name cloudjanitorz --engine MySQL \
 --db-instance-identifier cloudjanitorz --backup-retention-period 3 \
 --db-instance-class db.t2.micro --allocated-storage 5 --publicly-accessible \
 --master-username cloudjanitorz --master-user-password cloudjanitorz
+
+Connect to mysql:
+mysql -h cloudjanitorz.c3cnrieiquqk.us-east-1.rds.amazonaws.com -P 3306 -u cloudjanitorz -p cloudjanitorz
 
 Lambda.
 $ aws lambda create-function --function-name cloudjanitorz-load-policy-data --runtime python3.6 \
