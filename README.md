@@ -54,3 +54,10 @@ aws lambda invoke --function-name cloudjanitorz-load-policy-data --payload file:
 
 FUTURE IDEAS
 1. user interface showing all policies in plain english. when a new one is added, a database table is created, and the minimum access for the role will be added.
+
+
+
+
+BETTER arch
+* logs of rules / config etc should be sent to s3 drop zone
+* glue job move data to analytics zone.-- daily, job bookmark enabled.

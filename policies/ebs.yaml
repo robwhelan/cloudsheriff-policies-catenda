@@ -1,5 +1,9 @@
 policies:
   - name: ebs-mark-unattached-deletion
+    mode:
+      type: periodic
+      schedule: 'rate(10 minutes)'
+      role: arn:aws:iam::773548596459:role/lambda_basic_execution
     resource: ebs
     comments: |
       Mark any unattached EBS volumes for deletion in 30 days.
