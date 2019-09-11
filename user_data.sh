@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd /home/ec2-user && ls
-
+# hi
 rm -rf policies/ #delete this later when you fix the machine image.
 
 source /home/ec2-user/custodian/bin/activate;
