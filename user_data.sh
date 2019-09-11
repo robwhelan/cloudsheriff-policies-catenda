@@ -4,9 +4,6 @@ cd /home/ec2-user && ls
 
 rm -rf policies/ #delete this later when you fix the machine image.
 
-cd custodian && ls
-cd bin && ls
-
 source /home/ec2-user/custodian/bin/activate;
 mkdir policies && cd policies;
 aws s3 cp s3://cloudjanitorz/policies/ . --recursive;
