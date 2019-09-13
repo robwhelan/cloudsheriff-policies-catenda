@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
-cd /home/ec2-user && ls
+
+
+cd /home/ec2-user
+
+aws s3 cp s3://git-to-amazon-s3-outputbucket-91zt4h9ettwo/robwhelan/cloudjanitorz-demo/master/cloudjanitorz-demo.zip repo.zip
+unzip repo.zip
+
 # hi
-rm -rf policies/ #delete this later when you fix the machine image.
+#rm -rf policies/ #delete this later when you fix the machine image.
 
 source /home/ec2-user/custodian/bin/activate;
 mkdir policies && cd policies;
