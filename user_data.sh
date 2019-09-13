@@ -7,7 +7,6 @@ unzip repo.zip
 cd policies;
 
 function run_policy_file () {
-  #echo $1
   local file=$1;
   local filename=${file%.*};
   local log_group="/the-sheriff/${filename}"
