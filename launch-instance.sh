@@ -10,7 +10,7 @@ aws ec2 run-instances \
   --instance-type t2.micro \
   --key-name aws-ec2-key-pair \
   --security-group-ids sg-d6cc7ca0 \
-  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=cloud-custodian-worker}]' \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=cloud-custodian-worker}]' \
   --user-data file://user_data.sh \
   --iam-instance-profile Name=S3-Admin-Access \
   --count 1
