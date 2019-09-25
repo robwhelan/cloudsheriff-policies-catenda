@@ -2,11 +2,11 @@ policies:
   - name: ebs-mark-unattached-deletion
     mode:
       type: periodic
-      schedule: 'rate(10 minutes)'
+      schedule: 'rate(1 day)'
       role: arn:aws:iam::773548596459:role/lambda_basic_execution
     resource: ebs
     comments: |
-      Mark any unattached EBS volumes for deletion in 30 days.
+      Mark any unattached EBS volumes for deletion in 14 days.
       Volumes set to not delete on instance termination do have
       valid use cases as data drives, but 99% of the time they
       appear to be just garbage creation.
@@ -16,7 +16,7 @@ policies:
     actions:
       - type: mark-for-op
         op: delete
-        days: 30
+        days: 14
 
   - name: ebs-unmark-attached-deletion
     resource: ebs
