@@ -1,0 +1,100 @@
+policies:
+  - name: iam-users-with-old-keys
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+    description: Find users with old access keys. Users can have up to two access keys.
+    resource: iam-user
+    filters:
+      - type: access-key
+        key: Status
+        value: Active
+      - type: credential
+        key: access_keys.last_rotated #change this to look at when it was created.
+        value_type: age
+        value: 90
+        op: greater-than
+  - name: iam-users-with-old-password
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+    resource: iam-user
+    filters:
+      - type: credential
+        key: password_last_changed
+        value_type: age
+        value: 90
+        op: greater-than
+  - name: inactive-users
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+    resource: iam-user
+    description: finds users with last activity greater than 90 days prior.
+    filters:
+      - or:
+        - type: credential
+          key: access_keys.last_used_date
+          value_type: age
+          value: 90
+          op: greater-than
+        - type: access-key
+          key: Status
+          value: Inactive
+      - or:
+        - type: credential
+          key: password_last_used
+          value: absent
+        - type: credential
+          key: password_last_used
+          value: 90
+          value_type: age
+          type: value
+          op: greater-than
+  - name: user-missing-mfa
+    resource: iam-user
+    filters:
+      - type: mfa-device
+        value: empty
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+  - name: iam-groups-with-no-users
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+    resource: iam-group
+    filters:
+      - type: has-users
+        value: false
+  - name: iam-groups-with-inline-policy
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+    resource: iam-group
+    filters:
+      - type: has-inline-policy
+        value: true
+  - name: iam-roles-with-inline-policies
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+    resource: iam-role
+    filters:
+      - type: has-inline-policy
+        value: true
+  - name: used-instance-policies-allowing-all
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+    resource: iam-policy
+    filters:
+      - type: used
+      - type: has-allow-all
+  - name: iam-instance-profiles-not-in-use
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+    resource: iam-profile
+    filters:
+      - type: unused
