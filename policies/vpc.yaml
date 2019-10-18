@@ -1,0 +1,32 @@
+policies:
+  - name: security-groups-unused
+    description: find any unused security group -- all extant ENIs.
+    resource: security-group
+    filters:
+      - unused
+  - name: wide-open-security-groups
+    resource: security-group
+    filters:
+      - type: ingress
+        Cidr:
+            value: "0.0.0.0/0"
+  - name: stale-security-groups
+    description: Rules are stale when they reference a deleted security group in a peer VPC, or a security group in a peer VPC for which the VPC peering connection has been deleted.
+    resource: security-group
+    filters:
+      - stale
+  - name: security-group-default-vpc
+    resource: security-group
+    filters:
+      - default-vpc
+  - name: vpc-without-flow-logs
+    resource: vpc
+    filters:
+      - not:
+        - type: flow-logs
+          enabled: true
+          set-op: or
+          op: equal
+          traffic-type: all
+          log-group: myVPCFlowLogs
+          status: active

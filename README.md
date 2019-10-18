@@ -1,28 +1,5 @@
-TODO:
-1. DONE S3 new object triggers a lambda
-2. DONE The lambda can load the data and it knows the policy
-3. (2/6) next, need to build tables for each policy (know what data you want to get... normalize everything?)
-4. START THE EC2 INSTANCE AND THE RDS DATABASE  
-5. write up the insert statements for each table.
-6. write up SELECT * statements for different endpoints on the demo dashboard. -- do this for each policy. 6 policies.
+**These are the base policies for Cloud Sheriff.**
 
-
-File arch.
-Policy filename should match the `name` field of the Policy, which should match the database table name.
-Pick the database table columns from the default output of the `report` function.
-
-
-RDS
-mysql
-
-RDS db
-$ aws rds create-db-instance --db-name cloudjanitorz --engine MySQL \
---db-instance-identifier cloudjanitorz --backup-retention-period 3 \
---db-instance-class db.t2.micro --allocated-storage 5 --publicly-accessible \
---master-username cloudjanitorz --master-user-password cloudjanitorz
-
-Connect to mysql:
-mysql -h cloudjanitorz.c3cnrieiquqk.us-east-1.rds.amazonaws.com -P 3306 -u cloudjanitorz -p cloudjanitorz
 
 Lambda.
 $ aws lambda create-function --function-name cloudjanitorz-load-policy-data --runtime python3.6 \
