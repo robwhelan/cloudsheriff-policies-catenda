@@ -1,6 +1,6 @@
 policies:
   - name: iam-users-with-old-keys
-    actions:
+    actions: &default-actions
       - type: invoke-lambda
         function: cloud-sheriff-notification
     description: Find users with old access keys. Users can have up to two access keys.
@@ -15,9 +15,10 @@ policies:
         value: 90
         op: greater-than
   - name: iam-users-with-old-password
-    actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+    *default-actions
+    #actions:
+    #  - type: invoke-lambda
+    #    function: cloud-sheriff-notification
     resource: iam-user
     filters:
       - type: credential
