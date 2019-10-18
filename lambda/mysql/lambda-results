@@ -1,1 +1,0 @@
-{"errorMessage": "'resource'", "errorType": "KeyError", "stackTrace": [["/var/task/app.py", 31, "handler", "policy_name = event[\"resource\"].split('/')[1]"]]}
