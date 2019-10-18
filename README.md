@@ -1,5 +1,10 @@
-**These are the base policies for Cloud Sheriff.**
+**These are the policies for Cloud Sheriff.**
 
+Work on these locally, and test them locally. When you commit and push them to the master branch, it tells a lambda to pull the files in to S3. When that is complete, another lambda will turn on an EC2 instance with the CloudCustodian AMI, and using UserData it will copy files and run all of them through Custodian. The EC2 instance provisions lambdas, config rules, etc based on the policies.
+
+To set it all up, you need to have a repo handy from GitLab, GitHub, or BitBucket, then run the `cfn` template `git-copy-clouformation.yaml`.
+
+***
 
 Lambda.
 $ aws lambda create-function --function-name cloudjanitorz-load-policy-data --runtime python3.6 \
