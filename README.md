@@ -14,8 +14,6 @@ Pick the database table columns from the default output of the `report` function
 
 RDS
 mysql
-cloudjanitorz (username and password)
-db name: cloudjanitorz
 
 RDS db
 $ aws rds create-db-instance --db-name cloudjanitorz --engine MySQL \
