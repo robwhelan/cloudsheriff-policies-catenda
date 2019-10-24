@@ -2,11 +2,11 @@ policies:
   - name: ec2-long-running-instances
     resource: ec2
     comment: |
-      Report running instances older than 30 days
+      Report running instances older than 15 days
     filters:
       - "State.Name": running
       - type: instance-age
-        days: 30
+        days: 15
   - name: old-AMIs
     resource: ami
     comment: |
