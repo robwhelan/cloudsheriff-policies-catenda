@@ -1,0 +1,56 @@
+vars:
+  lambda-notify: &default-notify
+    type: invoke-lambda
+    function: cloud-sheriff-notification
+
+policies:
+  - name: account-cloudtrail-not-enabled
+    resource: account
+    filters:
+      - type: check-cloudtrail
+        global-events: true
+        multi-region: true
+        running: true
+    actions: #&default-actions
+      - <<: *default-notify
+  - name: account-check-config-services
+    resource: account
+    filters:
+      - type: check-config
+        all-resources: true
+        global-resources: true
+        running: true
+    actions: #&default-actions
+      - <<: *default-notify
+  - name: invalid-ip-address-login-detected
+    resource: account
+    description: |
+      Notifies on invalid external IP console logins
+    mode:
+       type: cloudtrail
+       events:
+          - ConsoleLogin
+    filters:
+      - not:
+          - type: event
+            key: 'detail.sourceIPAddress'
+            value: ^70\.114\.248\.155$
+            op: regex
+    actions: #&default-actions
+      - <<: *default-notify
+  - name: root-user-login-detected
+    resource: account
+    description: |
+      Notifies Security and Cloud Admins teams on any AWS root user console logins
+    mode:
+       type: cloudtrail
+       events:
+          - ConsoleLogin
+    filters:
+       - type: event
+         key: "detail.userIdentity.type"
+         value_type: swap
+         op: in
+         value: Root
+    actions: #&default-actions
+      - <<: *default-notify

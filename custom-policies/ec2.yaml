@@ -1,0 +1,74 @@
+policies:
+  - name: ec2-long-running-instances
+    resource: ec2
+    comment: |
+      Report running instances older than 30 days
+    filters:
+      - "State.Name": running
+      - type: instance-age
+        days: 30
+  - name: old-AMIs
+    resource: ami
+    comment: |
+      Report on all images older than 90 days which should be de-registered.
+    filters:
+      - type: image-age
+        days: 90
+  - name: ec2-singletons
+    description: ec2 instances not part of an autoscaling group or Cloudwatch recover alarms.
+    resource: ec2
+    filters:
+      - singleton
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+  - name: underutilized_ec2
+    resource: aws.ec2
+    description: |
+      Stops EC2 instances that have less than 10% CPU utilization over the past four days.
+    filters:
+      - type: metrics
+        name: CPUUtilization
+        days: 1
+        value: 30
+        op: less-than
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+  - name: ec2-in-non-standard-region
+    resource: ec2
+    description: |
+          Any EC2 instance launched in a non standard region outside
+          of us-east-1 and eu-west-1 will be flagged and create a notification
+    mode:
+          type: cloudtrail
+          events:
+            - RunInstances
+    filters:
+          - type: event
+            key: "region"
+            op: not-in
+            value:
+              - us-east-1
+              - eu-west-1
+              - us-east-2
+              - us-west-2
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
+  - name: untagged-ec2
+    description: Notifies if an EC2 instance is spun up without a `creator` tag.
+    resource: ec2
+    mode:
+      type: cloudtrail
+      role: arn:aws:iam::{account_id}:role/custodian-auto-tagger
+      # note {account_id} is optional. If you put that there instead of
+      # your actual account number, when the policy is provisioned it
+      # will automatically inherit the account_id properly
+      events:
+        - RunInstances
+    filters:
+      - tag:creator: absent
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification

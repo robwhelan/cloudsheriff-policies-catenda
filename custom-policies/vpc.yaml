@@ -10,6 +10,9 @@ policies:
       - type: ingress
         Cidr:
             value: "0.0.0.0/0"
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
   - name: stale-security-groups
     description: Rules are stale when they reference a deleted security group in a peer VPC, or a security group in a peer VPC for which the VPC peering connection has been deleted.
     resource: security-group
@@ -30,3 +33,12 @@ policies:
           traffic-type: all
           log-group: myVPCFlowLogs
           status: active
+  - name: unallocated-eips
+    resource: network-addr
+    actions:
+      - type: mark-for-op
+        tag: custodian_cleanup
+        op: release
+        days: 3
+      - type: invoke-lambda
+        function: cloud-sheriff-notification

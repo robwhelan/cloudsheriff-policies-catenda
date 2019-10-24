@@ -1,0 +1,8 @@
+policies:
+  - name: asg-invalid-configuration
+    resource: asg
+    filters:
+      - invalid
+    actions: #&default-actions
+      - type: invoke-lambda
+        function: cloud-sheriff-notification

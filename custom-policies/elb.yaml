@@ -1,0 +1,10 @@
+policies:
+  - name: unused-elb
+    resource: elb
+    description: |
+     Notify on any ELB with no instances attached.
+    filters:
+      - Instances: []
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification

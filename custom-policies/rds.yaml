@@ -1,0 +1,40 @@
+vars:
+  lambda-notify: &default-notify
+    type: invoke-lambda
+    function: cloud-sheriff-notification
+  metrics-filters: &metrics-filter
+    type: metrics
+    name: DatabaseConnections
+    days: 14
+    value: 0
+    op: equal
+
+policies:
+  - name: terminate-unencrypted-public-rds
+    description: |
+      Terminate all unencrypted or publicly available RDS upon creation
+    resource: rds
+    mode:
+      type: cloudtrail
+      events:
+        - CreateDBInstance
+    filters:
+      - or:
+          - StorageEncrypted: false
+          - PubliclyAccessible: true
+    actions:
+      - <<: *default-notify
+  - name: rds-unused-databases-notify-step1
+    resource: rds
+    description: |
+      Take the average number of connections over 14 days for databases that are greater than 14
+      days old and notify the resources owner on any unused RDS.
+    filters:
+      - type: value
+        value_type: age
+        key: InstanceCreateTime
+        value: 14
+        op: greater-than
+      - <<: *metrics-filter
+    actions:
+      - <<: *default-notify

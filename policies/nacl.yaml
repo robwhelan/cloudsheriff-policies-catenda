@@ -1,9 +1,0 @@
-policies:
-  - name: user-missing-mfa
-    resource: iam-user
-    filters:
-      - type: mfa-device
-        value: empty
-    actions:
-      - type: invoke-lambda
-        function: decode-custodian-message
