@@ -1,5 +1,4 @@
 policies:
-
    - name: s3-configure-standards-real-time
      resource: s3
      mode:
@@ -14,20 +13,6 @@ policies:
          - CreateBucket
        role: arn:aws:iam::{account_id}:role/lambda_basic_execution
        timeout: 200
-     actions:
-       - type: auto-tag-user
-         tag: CreatorName
-       - type: set-bucket-encryption
-       - type: toggle-versioning
-         enabled: true
-       - type: configure-lifecycle
-         rules:
-          - ID: company-s3-lifecycle
-            Status: Enabled
-            Filter:
-               Prefix: /
-            Transitions:
-              - Days: 180
-                StorageClass: STANDARD_IA
-            NoncurrentVersionExpiration:
-                NoncurrentDays: 35
+    actions:
+      - type: invoke-lambda
+        function: cloud-sheriff-notification
