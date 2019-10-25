@@ -41,9 +41,10 @@ policies:
           Any EC2 instance launched in a non standard region outside
           of us-east-1 and eu-west-1 will be flagged and create a notification
     mode:
-          type: cloudtrail
-          events:
-            - RunInstances
+      type: cloudtrail
+      role: arn:aws:iam::{account_id}:role/custodian-auto-tagger
+      events:
+        - RunInstances
     filters:
           - type: event
             key: "region"
