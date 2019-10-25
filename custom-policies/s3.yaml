@@ -12,7 +12,7 @@ policies:
       events:
         - CreateBucket
       role: arn:aws:iam::{account_id}:role/lambda_basic_execution
-      timeout: 200
+      timeout: 300
   actions:
     - type: invoke-lambda
       function: cloud-sheriff-notification
