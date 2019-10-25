@@ -1,18 +1,18 @@
 policies:
-   - name: s3-configure-standards-real-time
-     resource: s3
-     mode:
-       type: config-rule
-     description: |
-       This policy is triggered when a new S3 bucket is created and it applies
-       the AWS AES256 Default Bucket Encryption, Tags the creators ID, enables
-       object versioning, configures the bucket lifecycle and enables logging.
-     mode:
-       type: cloudtrail
-       events:
-         - CreateBucket
-       role: arn:aws:iam::{account_id}:role/lambda_basic_execution
-       timeout: 200
-    actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+  - name: s3-configure-standards-real-time
+    resource: s3
+    mode:
+      type: config-rule
+    description: |
+      This policy is triggered when a new S3 bucket is created and it applies
+      the AWS AES256 Default Bucket Encryption, Tags the creators ID, enables
+      object versioning, configures the bucket lifecycle and enables logging.
+    mode:
+      type: cloudtrail
+      events:
+        - CreateBucket
+      role: arn:aws:iam::{account_id}:role/lambda_basic_execution
+      timeout: 200
+  actions:
+    - type: invoke-lambda
+      function: cloud-sheriff-notification

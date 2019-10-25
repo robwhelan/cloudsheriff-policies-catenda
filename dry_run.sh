@@ -1,10 +1,11 @@
 #run this from root directory
+source ../../custodian/bin/activate
+
 function run_policy_file () {
   local file=$1;
   local filename=${file%.*};
   custodian run $file \
-    -s s3://cloudjanitorz/drop/ \
-    --metrics aws \
+    -s . \
     --dryrun
 }
 

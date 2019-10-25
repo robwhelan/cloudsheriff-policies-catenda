@@ -1,8 +1,7 @@
 policies:
   - name: ebs-mark-unattached-deletion
     resource: ebs
-    comments: |
-      Notify if finding any unattached EBS volumes.
+    comments: Notify if finding any unattached EBS volumes.
     actions: #&default-actions
       - type: invoke-lambda
         function: cloud-sheriff-notification
