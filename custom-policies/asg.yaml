@@ -1,5 +1,6 @@
 policies:
   - name: asg-invalid-configuration
+    description: invalid autoscaling group config references stale or missing resources.
     resource: asg
     filters:
       - invalid
