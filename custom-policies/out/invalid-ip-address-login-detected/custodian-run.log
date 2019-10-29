@@ -1,5 +1,0 @@
-2019-10-29 17:40:57,011 - custodian.policy - INFO - policy:invalid-ip-address-login-detected resource:account region:eu-west-1 count:0 time:0.26
-2019-10-29 17:41:05,983 - custodian.policy - INFO - policy:invalid-ip-address-login-detected resource:account region:eu-west-1 count:0 time:0.28
-2019-10-29 17:41:20,475 - custodian.policy - INFO - Provisioning policy lambda invalid-ip-address-login-detected
-2019-10-29 17:41:43,469 - custodian.policy - INFO - Provisioning policy lambda invalid-ip-address-login-detected
-2019-10-29 17:43:23,345 - custodian.policy - INFO - Provisioning policy lambda invalid-ip-address-login-detected
