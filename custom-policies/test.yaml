@@ -1,0 +1,20 @@
+policies:
+  - name: iam-users-with-old-keys
+    description: Find users with old access keys. Users can have up to two access keys.
+    resource: iam-user
+    actions: #&default-actions
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          IAM users with old keys are a liability because the keys can be floating around.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: iam-users-with-old-keys
+        recommendation: Rotate the users' keys and notify the person.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 50
+        title: iam-users-with-old-keys
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+         - "Sensitive Data Identifications/Passwords"
+        confidence: 100

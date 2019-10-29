@@ -36,5 +36,9 @@ policies:
   - name: unallocated-eips
     resource: network-addr
     actions:
+      - type: mark-for-op
+        tag: custodian_cleanup
+        op: release
+        days: 3
       - type: invoke-lambda
         function: cloud-sheriff-notification

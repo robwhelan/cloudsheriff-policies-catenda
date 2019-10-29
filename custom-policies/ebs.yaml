@@ -1,7 +1,17 @@
 policies:
   - name: ebs-mark-unattached-deletion
     resource: ebs
-    comments: Notify if finding any unattached EBS volumes.
+    comments: |
+      Notify if finding any unattached EBS volumes.
     actions: #&default-actions
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 25
+        description: |
+          EBS volume has been discovered to be unattached.
+        recommendation: Examine the EBS volume to see if it should be retired.
+        severity_normalized: 25
+        title: ebs-mark-unattached-deletion
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100

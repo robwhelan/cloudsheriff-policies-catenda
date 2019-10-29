@@ -2,11 +2,23 @@ policies:
   - name: ec2-long-running-instances
     resource: ec2
     comment: |
-      Report running instances older than 15 days
+      Report running instances older than 30 days
     filters:
       - "State.Name": running
       - type: instance-age
-        days: 15
+        days: 30
+    actions:
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          EC2 instance has been running for over 30 days.
+        recommendation: Examine the EC2 instance to see if it should be retired.
+        severity_normalized: 25
+        title: ec2-long-running-instances
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
   - name: old-AMIs
     resource: ami
     comment: |
@@ -14,37 +26,66 @@ policies:
     filters:
       - type: image-age
         days: 90
+    actions:
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          An AMI has been discovered to be older than 90 days.
+        recommendation: Examine the AMI to see if it needs any patching of the underlying OS, libraries, or runtimes.
+        severity_normalized: 25
+        title: old-AMIs
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
   - name: ec2-singletons
     description: ec2 instances not part of an autoscaling group or Cloudwatch recover alarms.
     resource: ec2
     filters:
       - singleton
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
-  - name: underutilized_ec2
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          An EC2 has been discovered to be a singleton.
+        recommendation: Examine the EC2 instance to see if it should be part of an autoscaling group or any recovery alarms.
+        severity_normalized: 25
+        title: old-AMIs
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
+  - name: underutilized-ec2
     resource: aws.ec2
     description: |
-      Stops EC2 instances that have less than 10% CPU utilization over the past four days.
+      Finds EC2 instances that have less than 30% CPU utilization over the past four days.
     filters:
       - type: metrics
         name: CPUUtilization
-        days: 1
+        days: 4
         value: 30
         op: less-than
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 50
+        description: |
+          An EC2 has been discovered to have been underutilized for the last 4 days.
+        recommendation: Examine the EC2 instance to see if it should be right-sized or turned off.
+        severity_normalized: 50
+        title: underutilized-ec2
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
   - name: ec2-in-non-standard-region
     resource: ec2
     description: |
           Any EC2 instance launched in a non standard region outside
-          of us-east-1 and eu-west-1 will be flagged and create a notification
+          of us-east-1, us-east-2, eu-west-1, and eu-west-2 will be flagged and create a notification
     mode:
-      type: cloudtrail
-      role: arn:aws:iam::{account_id}:role/custodian-auto-tagger
-      events:
-        - RunInstances
+          type: cloudtrail
+          events:
+            - RunInstances
     filters:
           - type: event
             key: "region"
@@ -55,10 +96,19 @@ policies:
               - us-east-2
               - us-west-2
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 50
+        description: |
+          An EC2 has been discovered to have been deployed in a non-standard region.
+        recommendation: Examine the EC2 instance to see if the region is correct.
+        severity_normalized: 50
+        title: ec2-in-non-standard-region
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
   - name: untagged-ec2
-    description: Notifies if an EC2 instance is spun up without a `creator` tag.
+    description: Notifies if an EC2 instance is started up without a `creator` tag.
     resource: ec2
     mode:
       type: cloudtrail
@@ -71,5 +121,14 @@ policies:
     filters:
       - tag:creator: absent
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          An EC2 has been deployed without a 'creator' tag.
+        recommendation: Examine the EC2 instance find out if everything is right.
+        severity_normalized: 25
+        title: ec2-in-non-standard-region
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100

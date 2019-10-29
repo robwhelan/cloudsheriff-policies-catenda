@@ -1,9 +1,17 @@
 policies:
   - name: asg-invalid-configuration
-    description: invalid autoscaling group config references stale or missing resources.
     resource: asg
     filters:
       - invalid
-    actions: #&default-actions
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+    actions:
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 25
+        description: |
+          Autoscaling Group has an invalid configuration.
+        recommendation: Examine the ASG to see what underlying resources are stale or invalid, and correct them.
+        severity_normalized: 25
+        title: asg-invalid-configuration
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100

@@ -1,8 +1,4 @@
-vars:
-  lambda-notify: &default-notify
-    type: invoke-lambda
-    function: cloud-sheriff-notification
-
+#https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html
 policies:
   - name: account-cloudtrail-not-enabled
     resource: account
@@ -11,33 +7,63 @@ policies:
         global-events: true
         multi-region: true
         running: true
-    actions: #&default-actions
-      - <<: *default-notify
+    actions:
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          Cloudtrail should be enabled for all regions.
+        recommendation: Enable cloudtrail across all regions and point the logs to your security data lake drop zone.
+        severity_normalized: 50
+        title: account-cloudtrail-not-enabled
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
   - name: account-check-config-services
     resource: account
     filters:
       - type: check-config
         all-resources: true
         global-resources: true
-        running: true
+        running: false
     actions: #&default-actions
-      - <<: *default-notify
-#  - name: invalid-ip-address-login-detected
-#    resource: account
-#    description: |
-#      Notifies on invalid external IP console logins
-#    mode:
-#       type: cloudtrail
-#       events:
-#          - ConsoleLogin
-#    filters:
-#      - not:
-#          - type: event
-#            key: 'detail.sourceIPAddress'
-#            value: ^70\.114\.248\.155$
-#            op: regex
-#    actions: #&default-actions
-#      - <<: *default-notify
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          Config should be enabled for all regions.
+        recommendation: Enable config across all regions and point the logs to your security data lake drop zone.
+        severity_normalized: 50
+        title: account-check-config-services
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
+  - name: invalid-ip-address-login-detected
+    resource: account
+    description: |
+      Notifies on invalid external IP console logins
+    mode:
+       type: cloudtrail
+       events:
+          - ConsoleLogin
+    filters:
+      - not:
+          - type: event
+            key: 'detail.sourceIPAddress'
+            value: ^70\.114\.248\.155$
+            op: regex
+    actions: #&default-actions
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          Console login from an unknown IP address.
+        recommendation: Find the typical IP addresses of your users that log into the console and add them to this policy.
+        severity_normalized: 50
+        title: invalid-ip-address-login-detected
+        types:
+         - "TTPs/Initial Access"
+        confidence: 100
   - name: root-user-login-detected
     resource: account
     description: |
@@ -53,4 +79,14 @@ policies:
          op: in
          value: Root
     actions: #&default-actions
-      - <<: *default-notify
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          Root user login.
+        recommendation: Understand the purpose for the root user login.
+        severity_normalized: 50
+        title: root-user-login-detected
+        types:
+         - "TTPs/Initial Access"
+        confidence: 100

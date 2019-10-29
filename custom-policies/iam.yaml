@@ -1,8 +1,21 @@
 policies:
   - name: iam-users-with-old-keys
     actions: #&default-actions
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          IAM users with old keys are a liability because the keys can be floating around.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: iam-users-with-old-keys
+        recommendation: Rotate the users' keys and notify the person.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 50
+        title: iam-users-with-old-keys
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+         - "Sensitive Data Identifications/Passwords"
+        confidence: 100
     description: Find users with old access keys. Users can have up to two access keys.
     resource: iam-user
     filters:
@@ -17,8 +30,21 @@ policies:
   - name: iam-users-with-old-password
     #*default-actions
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          IAM users with old passwords are a liability because the password can be floating around.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: iam-users-with-old-password
+        recommendation: Rotate the users' passwords.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 50
+        title: iam-users-with-old-keys
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices"
+         - "Sensitive Data Identifications/Passwords"
+        confidence: 100
     resource: iam-user
     filters:
       - type: credential
@@ -28,8 +54,21 @@ policies:
         op: greater-than
   - name: inactive-users
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          Inactive users - those without any activity in the last 90 days - should be deactivated.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: iam-users-with-old-password
+        recommendation: Deactivate the users.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 50
+        title: inactive-users
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices"
+         - "Sensitive Data Identifications/Passwords"
+        confidence: 100
     resource: iam-user
     description: finds users with last activity greater than 90 days prior.
     filters:
@@ -58,44 +97,120 @@ policies:
       - type: mfa-device
         value: empty
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          A user with console access but without MFA is missing a key safeguard.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: iam-users-with-old-password
+        recommendation: Implement 2FA for the user.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 50
+        title: user-missing-mfa
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices"
+         - "Sensitive Data Identifications/Passwords"
+         - "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
+        confidence: 100
   - name: iam-groups-with-no-users
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 25
+        description: |
+          An IAM group has been found to lack any users.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: iam-users-with-old-password
+        recommendation: Delete the group.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 25
+        title: iam-groups-with-no-users
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices"
+         - "Software and Configuration Checks/Industry and Regulatory Standards/Cloud Security Alliance Controls"
+        confidence: 100
     resource: iam-group
     filters:
       - type: has-users
         value: false
   - name: iam-groups-with-inline-policy
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          An IAM group has been found to have an inline policy.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: iam-users-with-old-password
+        recommendation: Remove the inline policy or replace with a managed policy.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 25
+        title: iam-groups-with-inline-policy
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices"
+         - "Software and Configuration Checks/Industry and Regulatory Standards/Cloud Security Alliance Controls"
+        confidence: 100
     resource: iam-group
     filters:
       - type: has-inline-policy
         value: true
   - name: iam-roles-with-inline-policies
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          An IAM role has been found to have an inline policy.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: iam-roles-with-inline-policy
+        recommendation: Remove the inline policy or replace with a managed policy.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 25
+        title: iam-roles-with-inline-policy
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices"
+        confidence: 100
     resource: iam-role
     filters:
       - type: has-inline-policy
         value: true
   - name: used-instance-policies-allowing-all
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          An IAM role has been found to have an inline policy.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: used-instance-policies-allowing-all
+        recommendation: Modify the instance policies to reduce permissions (*).
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 25
+        title: used-instance-policies-allowing-all
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices"
+        confidence: 100
     resource: iam-policy
     filters:
       - type: used
       - type: has-allow-all
   - name: iam-instance-profiles-not-in-use
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          An instance profile is found to be not in use.
+        fields:
+          big-cloud-country/cloud-sheriff/policy-name: iam-instance-profiles-not-in-use
+        recommendation: Remove the instance profile.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 25
+        title: iam-instance-profiles-not-in-use
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices"
+        confidence: 100
     resource: iam-profile
     filters:
       - type: unused
