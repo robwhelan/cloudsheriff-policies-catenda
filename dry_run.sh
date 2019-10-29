@@ -5,7 +5,7 @@ function run_policy_file () {
   local file=$1;
   local filename=${file%.*};
   custodian run $file \
-    -s . \
+    -s out \
     --dryrun
 }
 
