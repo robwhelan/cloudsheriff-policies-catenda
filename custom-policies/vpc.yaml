@@ -4,6 +4,20 @@ policies:
     resource: security-group
     filters:
       - unused
+    actions:
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          Unused security groups are a liability because they could have unauthorized settings and could be used out of convenience in the future.
+        recommendation: Examine the security groups.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 50
+        title: unused-security-groups
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
+
   - name: wide-open-security-groups
     resource: security-group
     filters:
@@ -11,17 +25,54 @@ policies:
         Cidr:
             value: "0.0.0.0/0"
     actions:
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          Security groups with ingress of "anything" (0.0.0.0/0) are a liability.
+        recommendation: Modify the security groups to limit incoming traffic.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 50
+        title: wide-open-security-groups
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
   - name: stale-security-groups
     description: Rules are stale when they reference a deleted security group in a peer VPC, or a security group in a peer VPC for which the VPC peering connection has been deleted.
     resource: security-group
     filters:
       - stale
+    actions:
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          Stale security groups should be retired.
+        recommendation: Delete the security groups or modify them to refer to a live SG or VPCE.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 25
+        title: stale-security-groups
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
+
   - name: security-group-default-vpc
     resource: security-group
     filters:
       - default-vpc
+    actions:
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          Security groups built in the default vpc.
+        recommendation: Examine the security groups to see if they are really necessary.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 25
+        title: security-groups-in-default-VPC
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
   - name: vpc-without-flow-logs
     resource: vpc
     filters:
@@ -33,12 +84,16 @@ policies:
           traffic-type: all
           log-group: myVPCFlowLogs
           status: active
-  - name: unallocated-eips
-    resource: network-addr
     actions:
-      - type: mark-for-op
-        tag: custodian_cleanup
-        op: release
-        days: 3
-      - type: invoke-lambda
-        function: cloud-sheriff-notification
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          Unactivated VPC flow logs
+        recommendation: Activate the VPC flow logs and point to your security datalake.
+        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        severity_normalized: 50
+        title: vpc-without-flow-logs
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
