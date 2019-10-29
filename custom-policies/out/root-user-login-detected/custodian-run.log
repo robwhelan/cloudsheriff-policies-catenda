@@ -1,0 +1,5 @@
+2019-10-29 17:40:57,277 - custodian.policy - INFO - policy:root-user-login-detected resource:account region:eu-west-1 count:1 time:0.26
+2019-10-29 17:41:06,256 - custodian.policy - INFO - policy:root-user-login-detected resource:account region:eu-west-1 count:1 time:0.27
+2019-10-29 17:41:23,296 - custodian.policy - INFO - Provisioning policy lambda root-user-login-detected
+2019-10-29 17:41:46,391 - custodian.policy - INFO - Provisioning policy lambda root-user-login-detected
+2019-10-29 17:43:27,874 - custodian.policy - INFO - Provisioning policy lambda root-user-login-detected
