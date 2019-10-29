@@ -1,0 +1,8 @@
+2019-10-29 16:39:22,093 - custodian.policy - INFO - Provisioning policy lambda invalid-ip-address-login-detected
+2019-10-29 16:41:29,415 - custodian.policy - INFO - Provisioning policy lambda invalid-ip-address-login-detected
+2019-10-29 16:41:30,609 - custodian.serverless - INFO - Publishing custodian policy lambda function custodian-invalid-ip-address-login-detected
+2019-10-29 16:51:55,804 - custodian.policy - INFO - Provisioning policy lambda invalid-ip-address-login-detected
+2019-10-29 17:00:26,378 - custodian.policy - INFO - Provisioning policy lambda invalid-ip-address-login-detected
+2019-10-29 17:00:27,533 - custodian.serverless - INFO - Publishing custodian policy lambda function custodian-invalid-ip-address-login-detected
+2019-10-29 17:03:12,946 - custodian.policy - INFO - Provisioning policy lambda invalid-ip-address-login-detected
+2019-10-29 17:03:34,739 - custodian.policy - INFO - Provisioning policy lambda invalid-ip-address-login-detected

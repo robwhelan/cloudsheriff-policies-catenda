@@ -1,4 +1,8 @@
 #https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html
+vars:
+  lambda-role: &lambda-role
+    role: arn:aws:iam::529219089249:role/cloud-sheriff-lambda-execution-role
+
 policies:
   - name: account-cloudtrail-not-enabled
     resource: account
@@ -44,6 +48,7 @@ policies:
       Notifies on invalid external IP console logins
     mode:
        type: cloudtrail
+       <<: *lambda-role
        events:
           - ConsoleLogin
     filters:
@@ -70,6 +75,7 @@ policies:
       Notifies Security and Cloud Admins teams on any AWS root user console logins
     mode:
        type: cloudtrail
+       <<: *lambda-role
        events:
           - ConsoleLogin
     filters:

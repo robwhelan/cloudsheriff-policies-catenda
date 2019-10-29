@@ -1,3 +1,7 @@
+vars:
+  lambda-role: &lambda-role
+    role: arn:aws:iam::529219089249:role/cloud-sheriff-lambda-execution-role
+
 policies:
   - name: ec2-long-running-instances
     resource: ec2
@@ -112,7 +116,7 @@ policies:
     resource: ec2
     mode:
       type: cloudtrail
-      role: arn:aws:iam::{account_id}:role/custodian-auto-tagger
+       <<: *lambda-role
       # note {account_id} is optional. If you put that there instead of
       # your actual account number, when the policy is provisioned it
       # will automatically inherit the account_id properly

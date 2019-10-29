@@ -1,0 +1,93 @@
+{
+  "policy": {
+    "name": "root-user-login-detected",
+    "resource": "account",
+    "description": "Notifies Security and Cloud Admins teams on any AWS root user console logins\n",
+    "mode": {
+      "role": "arn:aws:iam::529219089249:role/cloud-sheriff-lambda-execution-roles",
+      "type": "cloudtrail",
+      "events": [
+        "ConsoleLogin"
+      ],
+      "tags": {
+        "custodian-info": "mode=cloudtrail:version=0.8.45.0"
+      }
+    },
+    "filters": [
+      {
+        "type": "event",
+        "key": "detail.userIdentity.type",
+        "value_type": "swap",
+        "op": "in",
+        "value": "Root"
+      }
+    ],
+    "actions": [
+      {
+        "type": "post-finding",
+        "compliance_status": "FAILED",
+        "criticality": 50,
+        "description": "Root user login.\n",
+        "recommendation": "Understand the purpose for the root user login.",
+        "severity_normalized": 50,
+        "title": "root-user-login-detected",
+        "types": [
+          "TTPs/Initial Access"
+        ],
+        "confidence": 100
+      }
+    ]
+  },
+  "version": "0.8.45.0",
+  "execution": {
+    "id": "58303f44-6896-46b6-a141-c941f02d771a",
+    "start": 1572386617.414123,
+    "end_time": 1572386620.2431629,
+    "duration": 2.8290398120880127
+  },
+  "config": {
+    "region": "us-east-1",
+    "regions": [],
+    "cache": "~/.cache/cloud-custodian.cache",
+    "profile": null,
+    "account_id": null,
+    "assume_role": null,
+    "external_id": null,
+    "log_group": null,
+    "tracer": null,
+    "metrics_enabled": null,
+    "metrics": null,
+    "output_dir": "out",
+    "cache_period": 15,
+    "dryrun": false,
+    "authorization_file": null,
+    "subparser": "run",
+    "config": null,
+    "configs": [
+      "account.yaml"
+    ],
+    "policy_filter": null,
+    "resource_type": null,
+    "verbose": null,
+    "quiet": null,
+    "debug": false,
+    "skip_validation": false,
+    "command": "c7n.commands.run",
+    "vars": null
+  },
+  "sys-stats": {},
+  "api-stats": {
+    "sts.AssumeRole": 1,
+    "lambda.GetFunction": 1,
+    "lambda.UpdateFunctionCode": 1,
+    "lambda.UpdateFunctionConfiguration": 1
+  },
+  "metrics": [
+    {
+      "MetricName": "PolicyException",
+      "Timestamp": "2019-10-29T17:03:40.243142",
+      "Value": 1,
+      "Unit": "Count"
+    }
+  ]
+}

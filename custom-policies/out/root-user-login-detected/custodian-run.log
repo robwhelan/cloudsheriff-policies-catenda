@@ -1,0 +1,8 @@
+2019-10-29 16:39:22,292 - custodian.policy - INFO - Provisioning policy lambda root-user-login-detected
+2019-10-29 16:41:37,017 - custodian.policy - INFO - Provisioning policy lambda root-user-login-detected
+2019-10-29 16:41:38,144 - custodian.serverless - INFO - Publishing custodian policy lambda function custodian-root-user-login-detected
+2019-10-29 16:51:56,002 - custodian.policy - INFO - Provisioning policy lambda root-user-login-detected
+2019-10-29 17:00:37,278 - custodian.policy - INFO - Provisioning policy lambda root-user-login-detected
+2019-10-29 17:00:38,381 - custodian.serverless - INFO - Publishing custodian policy lambda function custodian-root-user-login-detected
+2019-10-29 17:03:17,568 - custodian.policy - INFO - Provisioning policy lambda root-user-login-detected
+2019-10-29 17:03:37,414 - custodian.policy - INFO - Provisioning policy lambda root-user-login-detected

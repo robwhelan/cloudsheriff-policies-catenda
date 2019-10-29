@@ -1,0 +1,96 @@
+{
+  "policy": {
+    "name": "invalid-ip-address-login-detected",
+    "resource": "account",
+    "description": "Notifies on invalid external IP console logins\n",
+    "mode": {
+      "role": "arn:aws:iam::529219089249:role/cloud-sheriff-lambda-execution-roles",
+      "type": "cloudtrail",
+      "events": [
+        "ConsoleLogin"
+      ],
+      "tags": {
+        "custodian-info": "mode=cloudtrail:version=0.8.45.0"
+      }
+    },
+    "filters": [
+      {
+        "not": [
+          {
+            "type": "event",
+            "key": "detail.sourceIPAddress",
+            "value": "^70\\.114\\.248\\.155$",
+            "op": "regex"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "type": "post-finding",
+        "compliance_status": "FAILED",
+        "criticality": 50,
+        "description": "Console login from an unknown IP address.\n",
+        "recommendation": "Find the typical IP addresses of your users that log into the console and add them to this policy.",
+        "severity_normalized": 50,
+        "title": "invalid-ip-address-login-detected",
+        "types": [
+          "TTPs/Initial Access"
+        ],
+        "confidence": 100
+      }
+    ]
+  },
+  "version": "0.8.45.0",
+  "execution": {
+    "id": "5be8ab7e-7c1b-4fef-b156-9726a98f2197",
+    "start": 1572386614.7387362,
+    "end_time": 1572386617.40759,
+    "duration": 2.668853759765625
+  },
+  "config": {
+    "region": "us-east-1",
+    "regions": [],
+    "cache": "~/.cache/cloud-custodian.cache",
+    "profile": null,
+    "account_id": null,
+    "assume_role": null,
+    "external_id": null,
+    "log_group": null,
+    "tracer": null,
+    "metrics_enabled": null,
+    "metrics": null,
+    "output_dir": "out",
+    "cache_period": 15,
+    "dryrun": false,
+    "authorization_file": null,
+    "subparser": "run",
+    "config": null,
+    "configs": [
+      "account.yaml"
+    ],
+    "policy_filter": null,
+    "resource_type": null,
+    "verbose": null,
+    "quiet": null,
+    "debug": false,
+    "skip_validation": false,
+    "command": "c7n.commands.run",
+    "vars": null
+  },
+  "sys-stats": {},
+  "api-stats": {
+    "sts.AssumeRole": 1,
+    "lambda.GetFunction": 1,
+    "lambda.UpdateFunctionCode": 1,
+    "lambda.UpdateFunctionConfiguration": 1
+  },
+  "metrics": [
+    {
+      "MetricName": "PolicyException",
+      "Timestamp": "2019-10-29T17:03:37.407567",
+      "Value": 1,
+      "Unit": "Count"
+    }
+  ]
+}

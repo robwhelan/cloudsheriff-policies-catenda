@@ -1,0 +1,93 @@
+{
+  "policy": {
+    "name": "account-check-config-services",
+    "resource": "account",
+    "filters": [
+      {
+        "type": "check-config",
+        "all-resources": true,
+        "global-resources": true,
+        "running": false
+      }
+    ],
+    "actions": [
+      {
+        "type": "post-finding",
+        "compliance_status": "FAILED",
+        "criticality": 50,
+        "description": "Config should be enabled for all regions.\n",
+        "recommendation": "Enable config across all regions and point the logs to your security data lake drop zone.",
+        "severity_normalized": 50,
+        "title": "account-check-config-services",
+        "types": [
+          "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        ],
+        "confidence": 100
+      }
+    ]
+  },
+  "version": "0.8.45.0",
+  "execution": {
+    "id": "1cd23f6f-350f-4ce2-a44b-1c95762e434b",
+    "start": 1572386612.874516,
+    "end_time": 1572386614.7357178,
+    "duration": 1.8612017631530762
+  },
+  "config": {
+    "region": "us-east-1",
+    "regions": [],
+    "cache": "~/.cache/cloud-custodian.cache",
+    "profile": null,
+    "account_id": null,
+    "assume_role": null,
+    "external_id": null,
+    "log_group": null,
+    "tracer": null,
+    "metrics_enabled": null,
+    "metrics": null,
+    "output_dir": "out",
+    "cache_period": 15,
+    "dryrun": false,
+    "authorization_file": null,
+    "subparser": "run",
+    "config": null,
+    "configs": [
+      "account.yaml"
+    ],
+    "policy_filter": null,
+    "resource_type": null,
+    "verbose": null,
+    "quiet": null,
+    "debug": false,
+    "skip_validation": false,
+    "command": "c7n.commands.run",
+    "vars": null
+  },
+  "sys-stats": {},
+  "api-stats": {
+    "iam.ListAccountAliases": 1,
+    "config.DescribeDeliveryChannels": 1,
+    "config.DescribeConfigurationRecorders": 1,
+    "securityhub.BatchImportFindings": 1
+  },
+  "metrics": [
+    {
+      "MetricName": "ResourceCount",
+      "Timestamp": "2019-10-29T17:03:33.951100",
+      "Value": 1,
+      "Unit": "Count"
+    },
+    {
+      "MetricName": "ResourceTime",
+      "Timestamp": "2019-10-29T17:03:33.951118",
+      "Value": 1.0757791996002197,
+      "Unit": "Seconds"
+    },
+    {
+      "MetricName": "ActionTime",
+      "Timestamp": "2019-10-29T17:03:34.735702",
+      "Value": 0.7839641571044922,
+      "Unit": "Seconds"
+    }
+  ]
+}
