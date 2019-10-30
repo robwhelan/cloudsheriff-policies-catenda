@@ -8,7 +8,7 @@ policies:
           IAM users with old keys are a liability because the keys can be floating around.
         fields:
           big-cloud-country/cloud-sheriff/policy-name: iam-users-with-old-keys
-        recommendation: Rotate the users' keys and notify the person
+        recommendation: Rotate the users' keys and notify the person.
         recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
         severity_normalized: 50
         title: iam-users-with-old-keys
