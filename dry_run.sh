@@ -1,7 +1,9 @@
 #run this from root directory
-source ../../custodian/bin/activate
+ls custodian/bin/activate
 
 function run_policy_file () {
+  source ../custodian/bin/activate
+
   local file=$1;
   local filename=${file%.*};
   custodian run $file \
