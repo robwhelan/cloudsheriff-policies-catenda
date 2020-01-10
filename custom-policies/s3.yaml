@@ -9,7 +9,7 @@ policies:
        type: config-rule
      description: |
        This policy is triggered when a new S3 bucket is created and it applies
-       the AWS AES256 Default Bucket Encryption, Tags the creators ID, enables
+       the AWS AES256 Default Bucket Encryption, Tags the creators ID, enables/disables
        object versioning, configures the bucket lifecycle and enables logging.
      mode:
        type: cloudtrail
@@ -22,7 +22,7 @@ policies:
          tag: CreatorName
        - type: set-bucket-encryption
        - type: toggle-versioning
-         enabled: true
+         enabled: false
        - type: configure-lifecycle
          rules:
           - ID: company-s3-lifecycle
@@ -30,7 +30,15 @@ policies:
             Filter:
                Prefix: /
             Transitions:
+              - Days: 1
+                StorageClass: STANDARD_IA
               - Days: 180
                 StorageClass: STANDARD_IA
             NoncurrentVersionExpiration:
                 NoncurrentDays: 35
+  # - name: s3-set-bucket-encryption
+  #   resource: s3
+  #   actions:
+  #     - type: set-bucket-encryption
+  #       crypto: AES256
+  #       enabled: True
