@@ -1,7 +1,4 @@
 vars:
-  lambda-notify: &default-notify
-    type: invoke-lambda
-    function: cloud-sheriff-notification
   metrics-filters: &metrics-filter
     type: metrics
     name: DatabaseConnections
@@ -23,8 +20,19 @@ policies:
           - StorageEncrypted: false
           - PubliclyAccessible: true
     actions:
-      - <<: *default-notify
-  - name: rds-unused-databases-notify-step1
+      - type: post-finding
+        compliance_status: FAILED
+        criticality: 50
+        description: |
+          An RDS instance has been created that is unencrypted or publicly available.
+        recommendation: Examine the RDS cluster to find out if everything is right.
+        region: eu-west-1
+        severity_normalized: 50
+        title: rds-unencrypted-or-publicly-avaiable
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
+  - name: rds-unused-databases-notify
     resource: rds
     description: |
       Take the average number of connections over 14 days for databases that are greater than 14
@@ -37,4 +45,15 @@ policies:
         op: greater-than
       - <<: *metrics-filter
     actions:
-      - <<: *default-notify
+      - type: post-finding
+        compliance_status: WARNING
+        criticality: 25
+        description: |
+          There are RDS instances that have been unused for 14 days.
+        recommendation: Examine the RDS cluster to find out if everything is right.
+        region: eu-west-1
+        severity_normalized: 25
+        title: rds-unused-databases
+        types:
+         - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"
+        confidence: 100
