@@ -1,6 +1,6 @@
 vars:
   lambda-role: &lambda-role
-    role: arn:aws:iam::529219089249:role/cloud-sheriff-lambda-execution-role
+    role: arn:aws:iam::{account_id}:role/cloud-sheriff-lambda-execution-role
 
 policies:
   - name: ec2-long-running-instances
