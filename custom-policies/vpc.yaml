@@ -11,7 +11,7 @@ policies:
         description: |
           Unused security groups are a liability because they could have unauthorized settings and could be used out of convenience in the future.
         recommendation: Examine the security groups.
-        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        region: eu-west-1
         severity_normalized: 50
         title: unused-security-groups
         types:
@@ -31,7 +31,7 @@ policies:
         description: |
           Security groups with ingress of "anything" (0.0.0.0/0) are a liability.
         recommendation: Modify the security groups to limit incoming traffic.
-        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        region: eu-west-1
         severity_normalized: 50
         title: wide-open-security-groups
         types:
@@ -49,7 +49,7 @@ policies:
         description: |
           Stale security groups should be retired.
         recommendation: Delete the security groups or modify them to refer to a live SG or VPCE.
-        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        region: eu-west-1
         severity_normalized: 25
         title: stale-security-groups
         types:
@@ -67,7 +67,7 @@ policies:
         description: |
           Security groups built in the default vpc.
         recommendation: Examine the security groups to see if they are really necessary.
-        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        region: eu-west-1
         severity_normalized: 25
         title: security-groups-in-default-VPC
         types:
@@ -91,7 +91,7 @@ policies:
         description: |
           Unactivated VPC flow logs
         recommendation: Activate the VPC flow logs and point to your security datalake.
-        recommendation_url: "https://www.example.com/policies/AntiDDoS.html"
+        region: eu-west-1
         severity_normalized: 50
         title: vpc-without-flow-logs
         types:

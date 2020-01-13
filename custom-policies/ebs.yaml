@@ -10,6 +10,7 @@ policies:
         description: |
           EBS volume has been discovered to be unattached.
         recommendation: Examine the EBS volume to see if it should be retired.
+        region: eu-west-1
         severity_normalized: 25
         title: ebs-mark-unattached-deletion
         types:

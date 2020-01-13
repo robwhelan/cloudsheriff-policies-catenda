@@ -18,6 +18,7 @@ policies:
         description: |
           Cloudtrail should be enabled for all regions.
         recommendation: Enable cloudtrail across all regions and point the logs to your security data lake drop zone.
+        region: eu-west-1
         severity_normalized: 50
         title: account-cloudtrail-not-enabled
         types:
@@ -37,6 +38,7 @@ policies:
         description: |
           Config should be enabled for all regions.
         recommendation: Enable config across all regions and point the logs to your security data lake drop zone.
+        region: eu-west-1
         severity_normalized: 50
         title: account-check-config-services
         types:
@@ -64,6 +66,7 @@ policies:
         description: |
           Console login from an unknown IP address.
         recommendation: Find the typical IP addresses of your users that log into the console and add them to this policy.
+        region: eu-west-1
         severity_normalized: 50
         title: invalid-ip-address-login-detected
         types:
@@ -91,6 +94,7 @@ policies:
         description: |
           Root user login.
         recommendation: Understand the purpose for the root user login.
+        region: eu-west-1
         severity_normalized: 50
         title: root-user-login-detected
         types:

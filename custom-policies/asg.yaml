@@ -11,6 +11,7 @@ policies:
           Autoscaling Group has an invalid configuration.
         recommendation: Examine the ASG to see what underlying resources are stale or invalid, and correct them.
         severity_normalized: 25
+        region: eu-west-1
         title: asg-invalid-configuration
         types:
          - "Software and Configuration Checks/AWS Security Best Practices/Runtime Behavior Analysis"

@@ -18,6 +18,7 @@ policies:
         description: |
           EC2 instance has been running for over 30 days.
         recommendation: Examine the EC2 instance to see if it should be retired.
+        region: eu-west-1
         severity_normalized: 25
         title: ec2-long-running-instances
         types:
@@ -37,6 +38,7 @@ policies:
         description: |
           An AMI has been discovered to be older than 90 days.
         recommendation: Examine the AMI to see if it needs any patching of the underlying OS, libraries, or runtimes.
+        region: eu-west-1
         severity_normalized: 25
         title: old-AMIs
         types:
@@ -54,6 +56,7 @@ policies:
         description: |
           An EC2 has been discovered to be a singleton.
         recommendation: Examine the EC2 instance to see if it should be part of an autoscaling group or any recovery alarms.
+        region: eu-west-1
         severity_normalized: 25
         title: old-AMIs
         types:
@@ -76,6 +79,7 @@ policies:
         description: |
           An EC2 has been discovered to have been underutilized for the last 4 days.
         recommendation: Examine the EC2 instance to see if it should be right-sized or turned off.
+        region: eu-west-1
         severity_normalized: 50
         title: underutilized-ec2
         types:
@@ -107,6 +111,7 @@ policies:
         description: |
           An EC2 has been discovered to have been deployed in a non-standard region.
         recommendation: Examine the EC2 instance to see if the region is correct.
+        region: eu-west-1
         severity_normalized: 50
         title: ec2-in-non-standard-region
         types:
@@ -132,6 +137,7 @@ policies:
         description: |
           An EC2 has been deployed without a 'creator' tag.
         recommendation: Examine the EC2 instance find out if everything is right.
+        region: eu-west-1
         severity_normalized: 25
         title: ec2-in-non-standard-region
         types:
